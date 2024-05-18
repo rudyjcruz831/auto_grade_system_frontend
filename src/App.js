@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
@@ -27,7 +26,7 @@ function App() {
     formData.append('email', email);
 
     try {
-      const response = await axios.post('http://<your-aws-backend-url>/upload', formData, {
+      const response = await axios.post('http://localhost:50052/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -43,18 +42,6 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
         <div>
           <input type="email" placeholder="Enter your email" onChange={handleEmailChange} />
           <input type="file" onChange={handleFileChange} />
