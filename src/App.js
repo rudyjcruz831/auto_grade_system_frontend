@@ -6,6 +6,8 @@ function App() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const [results, setResults] = useState([]);
+  const [summary, setSummary] = useState('');
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -26,13 +28,15 @@ function App() {
     formData.append('email', email);
 
     try {
-      const response = await axios.post('http://localhost:50052/upload', formData, {
+      const response = await axios.post('http://204.236.159.230:50052/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
       setMessage('File uploaded successfully!');
       console.log('File uploaded successfully:', response.data);
+      setResults(response.data.results);
+      setSummary(response.data.summary);
     } catch (error) {
       setMessage('Error uploading file.');
       console.error('Error uploading file:', error);
@@ -48,6 +52,19 @@ function App() {
           <button onClick={handleFileUpload}>Upload File</button>
         </div>
         {message && <p>{message}</p>}
+        {results.length > 0 && (
+          <div>
+            <h2>Test Results:</h2>
+            <ul>
+              {results.map((result, index) => (
+                <li key={index}>
+                  Test Case {result.CaseID + 1}: {result.Passed ? 'Passed' : 'Failed'} - Output: {result.Stdout}
+                </li>
+              ))}
+            </ul>
+            <p>Summary: {summary}</p>
+          </div>
+        )}
       </header>
     </div>
   );
